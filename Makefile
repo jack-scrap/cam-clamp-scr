@@ -2,7 +2,7 @@ CXX=g++
 
 EXEC=a.out
 
-SRC=main.cpp disp.cpp prog.cpp util.cpp
+SRC=main.cpp disp.cpp prog.cpp util.cpp pt.cpp
 HDR=math.h
 
 OBJ=$(SRC:%.cpp=%.o)
