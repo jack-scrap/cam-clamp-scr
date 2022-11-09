@@ -23,7 +23,7 @@ glm::mat4 view = glm::lookAt(camPos, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 
 glm::mat4 proj = glm::perspective(glm::radians(45.0), res[X] / (double) res[Y], 0.1, 100.0);
 
-class Cube {
+class Obj {
 	private:
 		unsigned int _noEl;
 
@@ -38,8 +38,8 @@ class Cube {
 		Prog _prog;
 
 	public:
-		Cube(GLfloat* vtc, GLuint* idc, unsigned int noEl) :
-			_prog("cube", "cube"),
+		Obj(GLfloat* vtc, GLuint* idc, unsigned int noEl, std::string nameVtx, std::string nameFrag) :
+			_prog(nameVtx, nameFrag),
 			_noEl(noEl),
 			_model(glm::mat4(1.0)) {
 				glGenVertexArrays(1, &_vao);
@@ -175,7 +175,7 @@ int main() {
 		3, 5, 7
 	};
 
-	Cube cube(vtcCube, idcCube, sizeof idcCube / sizeof *idcCube);
+	Obj cube(vtcCube, idcCube, sizeof idcCube / sizeof *idcCube, "cube", "cube");
 
 	/* Points */
 	glm::mat4 model = glm::mat4(1.0);
