@@ -17,7 +17,7 @@ Shad::Shad(std::string name, bool vtx) {
 		type = GL_FRAGMENT_SHADER;
 	}
 
-	std::string path = std::string(name) + std::string(".") + ext;
+	std::string path = "res/" + std::string(name) + std::string(".") + ext;
 
 	std::string txt = util::rd(path);
 	const char* src = txt.c_str();
