@@ -199,19 +199,28 @@ int main() {
 			bound[a][b] = 0.0;
 		}
 	}
+	Pt* ptBound[2][2];
 	for (int i = 0; i < sizeof vtcNorm / sizeof *vtcNorm; i++) {
 		if (vtcNorm[i][X] < bound[X][MIN]) {
 			bound[X][MIN] = vtcNorm[i][X];
+
+			ptBound[X][MIN] = new Pt(glm::value_ptr(vtcNorm[i]), "ndc", "white");
 		}
 		if (vtcNorm[i][X] > bound[X][MAX]) {
 			bound[X][MAX] = vtcNorm[i][X];
+
+			ptBound[X][MAX] = new Pt(glm::value_ptr(vtcNorm[i]), "ndc", "white");
 		}
 
 		if (vtcNorm[i][Y] < bound[Y][MIN]) {
 			bound[Y][MIN] = vtcNorm[i][Y];
+
+			ptBound[Y][MIN] = new Pt(glm::value_ptr(vtcNorm[i]), "ndc", "white");
 		}
 		if (vtcNorm[i][Y] > bound[Y][MAX]) {
 			bound[Y][MAX] = vtcNorm[i][Y];
+
+			ptBound[Y][MAX] = new Pt(glm::value_ptr(vtcNorm[i]), "ndc", "white");
 		}
 	}
 
@@ -289,12 +298,23 @@ int main() {
 
 		disp.clear(0, 0, 0, 1);
 
+		/* Objects */
 		glEnable(GL_DEPTH_TEST);
 
 		cube.draw();
 
+		/* Points */
 		glDisable(GL_DEPTH_TEST);
 
+		glPointSize(16);
+
+		for (int a = 0; a < 2; a++) {
+			for (int b = 0; b < 2; b++) {
+				ptBound[a][b]->draw();
+			}
+		}
+
+		/* Bounds */
 		glBindVertexArray(vao);
 		prog.use();
 
