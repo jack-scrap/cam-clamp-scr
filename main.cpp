@@ -16,11 +16,11 @@ const unsigned int res[2] = {
 	600
 };
 
-GLfloat vtx[3] = {
+const GLfloat vtx[3] = {
 	0.0, 0.0, 0.0
 };
 
-GLuint idx[1] = {
+const GLuint idx[1] = {
 	0
 };
 
