@@ -31,11 +31,15 @@ class Obj {
 
 		GLuint _vao;
 
-		GLint _uniModel;
-		GLint _uniView;
-		GLint _uniProj;
+		GLint _uni[3];
 
 		Prog _prog;
+
+		enum matrix {
+			MODEL,
+			VIEW,
+			PROJ
+		};
 
 	public:
 		Obj(GLfloat* vtc, GLuint* idc, unsigned int noEl, std::string nameVtx, std::string nameFrag) :
@@ -64,13 +68,13 @@ class Obj {
 				glVertexAttribPointer(attrPos, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*) 0);
 				glEnableVertexAttribArray(attrPos);
 
-				_uniModel = glGetUniformLocation(_prog._id, "model");
-				_uniView = glGetUniformLocation(_prog._id, "view");
-				_uniProj = glGetUniformLocation(_prog._id, "proj");
+				_uni[MODEL] = glGetUniformLocation(_prog._id, "model");
+				_uni[VIEW] = glGetUniformLocation(_prog._id, "view");
+				_uni[PROJ] = glGetUniformLocation(_prog._id, "proj");
 
-				glUniformMatrix4fv(_uniModel, 1, GL_FALSE, glm::value_ptr(_model));
-				glUniformMatrix4fv(_uniView, 1, GL_FALSE, glm::value_ptr(view));
-				glUniformMatrix4fv(_uniProj, 1, GL_FALSE, glm::value_ptr(proj));
+				glUniformMatrix4fv(_uni[MODEL], 1, GL_FALSE, glm::value_ptr(_model));
+				glUniformMatrix4fv(_uni[VIEW], 1, GL_FALSE, glm::value_ptr(view));
+				glUniformMatrix4fv(_uni[PROJ], 1, GL_FALSE, glm::value_ptr(proj));
 
 				_prog.unUse();
 			}
@@ -79,8 +83,8 @@ class Obj {
 			glBindVertexArray(_vao);
 			_prog.use();
 
-			glUniformMatrix4fv(_uniModel, 1, GL_FALSE, glm::value_ptr(_model));
-			glUniformMatrix4fv(_uniView, 1, GL_FALSE, glm::value_ptr(view));
+			glUniformMatrix4fv(_uni[MODEL], 1, GL_FALSE, glm::value_ptr(_model));
+			glUniformMatrix4fv(_uni[VIEW], 1, GL_FALSE, glm::value_ptr(view));
 
 			glDrawElements(GL_TRIANGLES, _noEl, GL_UNSIGNED_INT, (GLvoid*) 0);
 
