@@ -1,7 +1,7 @@
 CXX=g++
 
-STATIC=main.cpp disp.cpp prog.cpp util.cpp
-OBJ_STATIC=$(patsubst %.cpp, %.o, $(STATIC))
+SRC=main.cpp disp.cpp prog.cpp util.cpp
+OBJ=$(patsubst %.cpp, %.o, $(SRC))
 
 GL=-lGLEW -lGL
 SDL=-lSDL2
@@ -20,7 +20,7 @@ all: make
 main.o: main.cpp
 	$(CXX) -c $< -o $@ $(LDFLAGS)
 
-make: $(OBJ_STATIC) $(HDR)
+make: $(OBJ) $(HDR)
 	$(CXX) $^ $(LDFLAGS)
 
 clean:
