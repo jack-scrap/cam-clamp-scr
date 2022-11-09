@@ -54,7 +54,7 @@ int main() {
 	for (int a = 0; a < 3; a++) {
 		vtxVec[a] = vtx[a];
 	}
-	vtxVec[3] = 1.0;
+	vtxVec[3] = 1;
 
 	// Normalized device space
 	glm::vec3 vtxNorm = util::ndc(vtxVec, model, view, proj);
