@@ -76,25 +76,55 @@ int main() {
 	// shader
 	Prog prog("main", "white");
 
+	prog.use();
+
 	/// attribute
 	GLint attrPos = glGetAttribLocation(prog._id, "pos");
 	glVertexAttribPointer(attrPos, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*) 0);
 	glEnableVertexAttribArray(attrPos);
 
+	prog.unUse();
+
+	/* Second */
+	// data
+	GLuint vaoSnd;
+	glGenVertexArrays(1, &vaoSnd);
+	glBindVertexArray(vaoSnd);
+
+	// position
+	GLuint vboSnd;
+	glGenBuffers(1, &vboSnd);
+	glBindBuffer(GL_ARRAY_BUFFER, vboSnd);
+	glBufferData(GL_ARRAY_BUFFER, 3 * sizeof (GLfloat), vtc, GL_STATIC_DRAW);
+
+	// index
+	GLuint iboSnd;
+	glGenBuffers(1, &iboSnd);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboSnd);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof idc, idc, GL_STATIC_DRAW);
+
+	// matrix
+	// shader
+	Prog progSnd("world", "red");
+
+	progSnd.use();
+
+	/// attribute
+	GLint attrPosSnd = glGetAttribLocation(progSnd._id, "pos");
+	glVertexAttribPointer(attrPosSnd, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*) 0);
+	glEnableVertexAttribArray(attrPosSnd);
+
 	/// uniform
 	GLint
-		uniModel = glGetUniformLocation(prog._id, "model"),
-		uniView = glGetUniformLocation(prog._id, "view"),
-		uniProj = glGetUniformLocation(prog._id, "proj");
+		uniModelSnd = glGetUniformLocation(progSnd._id, "model"),
+		uniViewSnd = glGetUniformLocation(progSnd._id, "view"),
+		uniProjSnd = glGetUniformLocation(progSnd._id, "proj");
 
-	// initialize
-	prog.use();
+	glUniformMatrix4fv(uniModelSnd, 1, GL_FALSE, glm::value_ptr(model));
+	glUniformMatrix4fv(uniViewSnd, 1, GL_FALSE, glm::value_ptr(view));
+	glUniformMatrix4fv(uniProjSnd, 1, GL_FALSE, glm::value_ptr(proj));
 
-	glUniformMatrix4fv(uniModel, 1, GL_FALSE, glm::value_ptr(model));
-	glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
-	glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
-
-	prog.unUse();
+	progSnd.unUse();
 
 	SDL_Event e;
 	while (disp.open) {
@@ -106,12 +136,24 @@ int main() {
 
 		disp.clear(0, 0, 0, 1);
 
+		glPointSize(16);
+
 		glBindVertexArray(vao);
 		prog.use();
 
 		glDrawElements(GL_POINTS, 1, GL_UNSIGNED_INT, (GLvoid*) 0);
 
 		prog.unUse();
+		glBindVertexArray(0);
+
+		glPointSize(8);
+
+		glBindVertexArray(vaoSnd);
+		progSnd.use();
+
+		glDrawElements(GL_POINTS, 1, GL_UNSIGNED_INT, (GLvoid*) 0);
+
+		progSnd.unUse();
 		glBindVertexArray(0);
 
 		disp.update();
