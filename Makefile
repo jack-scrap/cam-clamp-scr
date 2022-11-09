@@ -10,7 +10,7 @@ LDFLAGS+=$(GL)
 
 HDR=math.h
 
-.PHONY: clean
+.PHONY: all make clean
 
 all: make
 
