@@ -2,6 +2,8 @@ CXX=g++
 
 EXEC=a.out
 
+BUILDDIR=build
+
 SRC=main.cpp disp.cpp prog.cpp util.cpp pt.cpp
 HDR=math.h
 
@@ -23,7 +25,7 @@ $(EXEC): $(OBJ) $(HDR)
 
 .PHONY: mk_build
 mk_build:
-	mkdir -p build
+	mkdir -p $(BUILDDIR)
 
 .PHONY: mk_o
 mk_o:
