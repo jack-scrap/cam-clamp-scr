@@ -187,23 +187,20 @@ int main() {
 		vtxNorm[i] = util::ndc(vtxVec, model, view, proj);
 	}
 
-	GLfloat minX = 0.0;
-	GLfloat maxX = 0.0;
-	GLfloat minY = 0.0;
-	GLfloat maxY = 0.0;
+	GLfloat bound[2][2];
 	for (int i = 0; i < sizeof vtxNorm / sizeof *vtxNorm; i++) {
-		if (vtxNorm[i][X] < minX) {
-			minX = vtxNorm[i][X];
+		if (vtxNorm[i][X] < bound[X][MIN]) {
+			bound[X][MIN] = vtxNorm[i][X];
 		}
-		if (vtxNorm[i][X] > maxX) {
-			maxX = vtxNorm[i][X];
+		if (vtxNorm[i][X] > bound[X][MAX]) {
+			bound[X][MAX] = vtxNorm[i][X];
 		}
 
-		if (vtxNorm[i][Y] < minY) {
-			minY = vtxNorm[i][Y];
+		if (vtxNorm[i][Y] < bound[Y][MIN]) {
+			bound[Y][MIN] = vtxNorm[i][Y];
 		}
-		if (vtxNorm[i][Y] > maxY) {
-			maxY = vtxNorm[i][Y];
+		if (vtxNorm[i][Y] > bound[Y][MAX]) {
+			bound[Y][MAX] = vtxNorm[i][Y];
 		}
 	}
 
@@ -217,10 +214,10 @@ int main() {
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
 	GLfloat vtc[] = {
-		minX, minY, 0.0,
-		maxX, minY, 0.0,
-		minX, maxY, 0.0,
-		maxX, maxY, 0.0
+		bound[X][MIN], bound[Y][MIN], 0.0,
+		bound[X][MAX], bound[Y][MIN], 0.0,
+		bound[X][MIN], bound[Y][MAX], 0.0,
+		bound[X][MAX], bound[Y][MAX], 0.0
 	};
 	glBufferData(GL_ARRAY_BUFFER, sizeof vtc, vtc, GL_STATIC_DRAW);
 
