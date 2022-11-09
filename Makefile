@@ -3,10 +3,7 @@ CXX=g++
 SRC=main.cpp disp.cpp prog.cpp util.cpp
 OBJ=$(patsubst %.cpp, %.o, $(SRC))
 
-GL=-lGLEW -lGL
-SDL=-lSDL2
-LDFLAGS+=$(SDL)
-LDFLAGS+=$(GL)
+LDFLAGS=-lGLEW -lGL -lSDL2
 
 HDR=math.h
 
