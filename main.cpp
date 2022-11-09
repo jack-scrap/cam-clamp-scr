@@ -174,8 +174,8 @@ int main() {
 	/* Points */
 	glm::mat4 model = glm::mat4(1.0);
 
-	glm::vec3 vtxNorm[2 * 2 * 2];
-	for (int i = 0; i < 2 * 2 * 2; i++) {
+	glm::vec3 vtxNorm[(sizeof vtcCube / sizeof *vtcCube) / 3];
+	for (int i = 0; i < sizeof vtxNorm / sizeof *vtxNorm; i++) {
 		// Calculated prior
 		glm::vec4 vtxVec;
 		for (int a = 0; a < 3; a++) {
