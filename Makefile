@@ -5,7 +5,7 @@ EXEC=a.out
 SRC=main.cpp disp.cpp prog.cpp util.cpp
 OBJ=$(SRC:%.cpp=%.o)
 
-LDFLAGS=-lGLEW -lGL -lSDL2
+LDFLAGS=-lSDL2 -lGLEW -lGL
 
 HDR=math.h
 
