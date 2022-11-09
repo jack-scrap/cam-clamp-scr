@@ -174,7 +174,7 @@ int main() {
 	/* Points */
 	glm::mat4 model = glm::mat4(1.0);
 
-	Pt* ptNorm[2 * 2 * 2];
+	glm::vec3 vtxNorm[2 * 2 * 2];
 	for (int i = 0; i < 2 * 2 * 2; i++) {
 		// Calculated prior
 		glm::vec4 vtxVec;
@@ -184,10 +184,66 @@ int main() {
 		vtxVec[3] = 1;
 
 		// Normalized device space
-		glm::vec3 vtxNorm = util::ndc(vtxVec, model, view, proj);
-
-		ptNorm[i] = new Pt(glm::value_ptr(vtxNorm), "ndc", "white");
+		vtxNorm[i] = util::ndc(vtxVec, model, view, proj);
 	}
+
+	GLfloat minX = 0.0;
+	GLfloat maxX = 0.0;
+	GLfloat minY = 0.0;
+	GLfloat maxY = 0.0;
+	for (int i = 0; i < sizeof vtxNorm / sizeof *vtxNorm; i++) {
+		if (vtxNorm[i][X] < minX) {
+			minX = vtxNorm[i][X];
+		}
+		if (vtxNorm[i][X] > maxX) {
+			maxX = vtxNorm[i][X];
+		}
+
+		if (vtxNorm[i][Y] < minY) {
+			minY = vtxNorm[i][Y];
+		}
+		if (vtxNorm[i][Y] > maxY) {
+			maxY = vtxNorm[i][Y];
+		}
+	}
+
+	GLuint vao;
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+
+	// Position
+	GLuint vbo;
+	glGenBuffers(1, &vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+	GLfloat vtc[] = {
+		minX, minY, 0.0,
+		maxX, minY, 0.0,
+		minX, maxY, 0.0,
+		maxX, maxY, 0.0
+	};
+	glBufferData(GL_ARRAY_BUFFER, sizeof vtc, vtc, GL_STATIC_DRAW);
+
+	// Index
+	GLuint ibo;
+	glGenBuffers(1, &ibo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+
+	const GLuint idc[] = {
+		0, 1, 2,
+		2, 1, 3
+	};
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof idc, idc, GL_STATIC_DRAW);
+
+	Prog prog("ndc", "trans");
+
+	prog.use();
+
+	GLint attrPos = glGetAttribLocation(prog._id, "pos");
+	glVertexAttribPointer(attrPos, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*) 0);
+	glEnableVertexAttribArray(attrPos);
+
+	prog.unUse();
 
 	SDL_Event e;
 	while (disp.open) {
@@ -211,11 +267,13 @@ int main() {
 
 		glDisable(GL_DEPTH_TEST);
 
-		glPointSize(16);
+		glBindVertexArray(vao);
+		prog.use();
 
-		for (int i = 0; i < 2 * 2 * 2; i++) {
-			ptNorm[i]->draw();
-		}
+		glDrawElements(GL_TRIANGLES, 2 * 3, GL_UNSIGNED_INT, (GLvoid*) 0);
+
+		prog.unUse();
+		glBindVertexArray(0);
 
 		disp.update();
 
