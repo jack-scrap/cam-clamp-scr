@@ -8,7 +8,7 @@ LDFLAGS=-lGLEW -lGL -lSDL2
 HDR=math.h
 
 .PHONY: all
-all: make
+all: a.out
 
 %.o: %.cpp %.h
 	$(CXX) -c $< -o $@ $(LDFLAGS)
@@ -16,9 +16,8 @@ all: make
 main.o: main.cpp
 	$(CXX) -c $< -o $@ $(LDFLAGS)
 
-.PHONY: make
-make: $(OBJ) $(HDR)
-	$(CXX) $(OBJ) $(LDFLAGS) -o a.out
+a.out: $(OBJ) $(HDR)
+	$(CXX) $(OBJ) -o $@ $(LDFLAGS)
 
 .PHONY: clean
 clean:
