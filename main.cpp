@@ -46,7 +46,7 @@ int main() {
 
 	glm::vec4 vtx = glm::vec4(vtc[0], vtc[1], vtc[2], 1.0);
 
-	// matrix is left-hand operand given being column-major
+	// Matrix is left-hand operand given being column-major
 	// World space
 	vtx = model * vtx;
 
