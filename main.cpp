@@ -188,6 +188,11 @@ int main() {
 	}
 
 	GLfloat bound[2][2];
+	for (int a = 0; a < 2; a++) {
+		for (int b = 0; b < 2; b++) {
+			bound[a][b] = 0.0;
+		}
+	}
 	for (int i = 0; i < sizeof vtcNorm / sizeof *vtcNorm; i++) {
 		if (vtcNorm[i][X] < bound[X][MIN]) {
 			bound[X][MIN] = vtcNorm[i][X];
