@@ -72,9 +72,9 @@ int main() {
 	vtxVec = proj * vtxVec;
 
 	// Normalized device space
-	glm::vec3 asdf = ndc(vtxVec);
+	glm::vec3 vtxNorm = ndc(vtxVec);
 
-	glBufferData(GL_ARRAY_BUFFER, 3 * sizeof (GLfloat), &asdf[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 3 * sizeof (GLfloat), &vtxNorm[0], GL_STATIC_DRAW);
 
 	// shader
 	Prog prog("ndc", "white");
