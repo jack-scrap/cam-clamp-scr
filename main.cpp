@@ -36,6 +36,7 @@ glm::vec3 ndc(glm::vec4 clip) {
 int main() {
 	Disp disp("asdf", res[X], res[Y]);
 
+	/* First */
 	// data
 	GLuint vao;
 	glGenVertexArrays(1, &vao);
