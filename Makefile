@@ -1,7 +1,7 @@
 CXX=g++
 
 SRC=main.cpp disp.cpp prog.cpp util.cpp
-OBJ=$(patsubst %.cpp, %.o, $(SRC))
+OBJ=$(SRC:%.cpp=%.o)
 
 LDFLAGS=-lGLEW -lGL -lSDL2
 
