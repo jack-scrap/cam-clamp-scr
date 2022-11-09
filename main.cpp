@@ -24,15 +24,6 @@ const GLuint idx[1] = {
 	0
 };
 
-glm::vec3 ndc(glm::vec4 clip) {
-	glm::vec3 vtx;
-	for (int a = 0; a < 3; a++) {
-		vtx[a] = clip[a] / clip[3];
-	}
-
-	return vtx;
-}
-
 int main() {
 	Disp disp("asdf", res[X], res[Y]);
 
@@ -73,7 +64,7 @@ int main() {
 	vtxVec = proj * vtxVec;
 
 	// Normalized device space
-	glm::vec3 vtxNorm = ndc(vtxVec);
+	glm::vec3 vtxNorm = util::ndc(vtxVec);
 
 	glBufferData(GL_ARRAY_BUFFER, 3 * sizeof (GLfloat), &vtxNorm[0], GL_STATIC_DRAW);
 
