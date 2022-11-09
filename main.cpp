@@ -41,7 +41,7 @@ int main() {
 	GLuint idx[1] = {
 		0
 	};
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof idx, idx, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof (GLfloat), idx, GL_STATIC_DRAW);
 
 	// matrix
 	glm::mat4 model = glm::mat4(1.0);
@@ -97,7 +97,7 @@ int main() {
 	GLuint iboSnd;
 	glGenBuffers(1, &iboSnd);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboSnd);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof idx, idx, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof (GLfloat), idx, GL_STATIC_DRAW);
 
 	// matrix
 	// shader
