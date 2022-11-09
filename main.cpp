@@ -38,10 +38,10 @@ int main() {
 	glGenBuffers(1, &ibo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 
-	GLuint idc[1] = {
+	GLuint idx[1] = {
 		0
 	};
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof idc, idc, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof idx, idx, GL_STATIC_DRAW);
 
 	// matrix
 	glm::mat4 model = glm::mat4(1.0);
@@ -50,24 +50,24 @@ int main() {
 	glm::mat4 view = glm::lookAt(glm::vec3(3, 3, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 	glm::mat4 proj = glm::perspective(glm::radians(45.0), res[X] / (double) res[Y], 0.1, 100.0);
 
-	glm::vec4 vtx = glm::vec4(glm::vec3(vtc[0], vtc[1], vtc[2]), 1.0);
+	glm::vec4 vtxVec = glm::vec4(glm::vec3(vtc[0], vtc[1], vtc[2]), 1.0);
 
 	// Matrix is left-hand operand given being column-major
 	// World space
-	vtx = model * vtx;
+	vtxVec = model * vtxVec;
 
 	// Camera space
-	vtx = view * vtx;
+	vtxVec = view * vtxVec;
 
 	// Clip space
-	vtx = proj * vtx;
+	vtxVec = proj * vtxVec;
 
 	// Normalized device space
 	for (int a = 0; a < 3 + 1; a++) {
-		vtx[a] = vtx[a] / vtx[3];
+		vtxVec[a] = vtxVec[a] / vtxVec[3];
 	}
 
-	glBufferData(GL_ARRAY_BUFFER, 3 * sizeof (GLfloat), &vtx[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 3 * sizeof (GLfloat), &vtxVec[0], GL_STATIC_DRAW);
 
 	// shader
 	Prog prog("main", "white");
@@ -97,7 +97,7 @@ int main() {
 	GLuint iboSnd;
 	glGenBuffers(1, &iboSnd);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboSnd);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof idc, idc, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof idx, idx, GL_STATIC_DRAW);
 
 	// matrix
 	// shader
