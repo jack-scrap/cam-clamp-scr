@@ -48,7 +48,7 @@ int main() {
 	GLuint ibo;
 	glGenBuffers(1, &ibo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof (GLfloat), idx, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof (GLint), idx, GL_STATIC_DRAW);
 
 	glm::vec4 vtxVec;
 	for (int a = 0; a < 3; a++) {
@@ -89,7 +89,7 @@ int main() {
 	GLuint iboSnd;
 	glGenBuffers(1, &iboSnd);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboSnd);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof (GLfloat), idx, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof (GLint), idx, GL_STATIC_DRAW);
 
 	// matrix
 	// shader
