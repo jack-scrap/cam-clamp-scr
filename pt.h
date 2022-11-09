@@ -5,15 +5,15 @@
 
 #include "prog.h"
 
-extern const GLfloat vtx[3];
-
-extern const GLuint idx[1];
-
 class Pt {
 	private:
 		GLuint _vao;
 
 	public:
+		static GLfloat vtx[3];
+
+		static GLuint idx[1];
+
 		Prog prog;
 
 		Pt(GLfloat* vtx, std::string nameVtx, std::string nameFrag);

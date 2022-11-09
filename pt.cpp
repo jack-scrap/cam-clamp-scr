@@ -1,10 +1,10 @@
 #include "pt.h"
 
-const GLfloat vtx[3] = {
+GLfloat Pt::vtx[3] = {
 	0.0, 0.0, 0.0
 };
 
-const GLuint idx[1] = {
+GLuint Pt::idx[1] = {
 	0
 };
 
@@ -23,7 +23,7 @@ Pt::Pt(GLfloat* vtx, std::string nameVtx, std::string nameFrag) :
 		GLuint ibo;
 		glGenBuffers(1, &ibo);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof (GLuint), idx, GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof (GLuint), Pt::idx, GL_STATIC_DRAW);
 
 		prog.use();
 

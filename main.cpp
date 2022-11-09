@@ -28,7 +28,7 @@ int main() {
 	glm::mat4 proj = glm::perspective(glm::radians(45.0), res[X] / (double) res[Y], 0.1, 100.0);
 
 	/* Uploaded to GPU */
-	Pt pt((GLfloat*) vtx, "world", "white");
+	Pt pt((GLfloat*) Pt::vtx, "world", "white");
 
 	pt.prog.use();
 
@@ -45,7 +45,7 @@ int main() {
 	/* Calculated prior */
 	glm::vec4 vtxVec;
 	for (int a = 0; a < 3; a++) {
-		vtxVec[a] = vtx[a];
+		vtxVec[a] = Pt::vtx[a];
 	}
 	vtxVec[3] = 1;
 
