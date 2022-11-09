@@ -78,12 +78,6 @@ int main() {
 	glm::mat4 view = glm::lookAt(glm::vec3(3, 3, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 	glm::mat4 proj = glm::perspective(glm::radians(45.0), res[X] / (double) res[Y], 0.1, 100.0);
 
-	glm::vec4 vtxVec;
-	for (int a = 0; a < 3; a++) {
-		vtxVec[a] = vtx[a];
-	}
-	vtxVec[3] = 1;
-
 	Pt pt((GLfloat*) vtx, "world", "white");
 
 	pt.prog.use();
@@ -97,6 +91,12 @@ int main() {
 	glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
 
 	pt.prog.unUse();
+
+	glm::vec4 vtxVec;
+	for (int a = 0; a < 3; a++) {
+		vtxVec[a] = vtx[a];
+	}
+	vtxVec[3] = 1;
 
 	// Normalized device space
 	glm::vec3 vtxNorm = util::ndc(vtxVec, model, view, proj);
