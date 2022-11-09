@@ -10,8 +10,18 @@
 #include "prog.h"
 #include "util.h"
 
+enum axis {
+	X,
+	Y
+};
+
+const unsigned int res[2] = {
+	800,
+	600
+};
+
 int main() {
-	Disp disp("asdf", 800, 600);
+	Disp disp("asdf", res[X], res[Y]);
 
 	// data
 	GLuint vao;
@@ -42,7 +52,7 @@ int main() {
 	model = glm::translate(model, glm::vec3(0.3, 0.7, 0.12));
 
 	glm::mat4 view = glm::lookAt(glm::vec3(3, 3, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
-	glm::mat4 proj = glm::perspective(glm::radians(45.0), 800.0 / 600.0, 0.1, 100.0);
+	glm::mat4 proj = glm::perspective(glm::radians(45.0), res[X] / (double) res[Y], 0.1, 100.0);
 
 	glm::vec4 vtx = glm::vec4(vtc[0], vtc[1], vtc[2], 1.0);
 
