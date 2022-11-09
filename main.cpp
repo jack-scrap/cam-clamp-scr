@@ -126,17 +126,20 @@ int main() {
 	/* Points */
 	glm::mat4 model = glm::mat4(1.0);
 
-	// Calculated prior
-	glm::vec4 vtxVec;
-	for (int a = 0; a < 3; a++) {
-		vtxVec[a] = vtcCube[a];
+	Pt* ptNorm[2 * 2 * 2];
+	for (int i = 0; i < 2 * 2 * 2; i++) {
+		// Calculated prior
+		glm::vec4 vtxVec;
+		for (int a = 0; a < 3; a++) {
+			vtxVec[a] = vtcCube[(i * 3) + a];
+		}
+		vtxVec[3] = 1;
+
+		// Normalized device space
+		glm::vec3 vtxNorm = util::ndc(vtxVec, model, view, proj);
+
+		ptNorm[i] = new Pt(glm::value_ptr(vtxNorm), "ndc", "white");
 	}
-	vtxVec[3] = 1;
-
-	// Normalized device space
-	glm::vec3 vtxNorm = util::ndc(vtxVec, model, view, proj);
-
-	Pt ptNorm(glm::value_ptr(vtxNorm), "ndc", "white");
 
 	SDL_Event e;
 	while (disp.open) {
@@ -156,7 +159,9 @@ int main() {
 
 		glPointSize(16);
 
-		ptNorm.draw();
+		for (int i = 0; i < 2 * 2 * 2; i++) {
+			ptNorm[i]->draw();
+		}
 
 		disp.update();
 	}
