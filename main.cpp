@@ -125,34 +125,18 @@ int main() {
 
 	/* Points */
 	glm::mat4 model = glm::mat4(1.0);
-	model = glm::translate(model, glm::vec3(0.3, 0.7, 0.12));
-
-	// Uploaded to GPU
-	Pt pt((GLfloat*) Pt::vtx, "world", "white");
-
-	pt.prog.use();
-
-	GLint uniModel = glGetUniformLocation(pt.prog._id, "model");
-	GLint uniView = glGetUniformLocation(pt.prog._id, "view");
-	GLint uniProj = glGetUniformLocation(pt.prog._id, "proj");
-
-	glUniformMatrix4fv(uniModel, 1, GL_FALSE, glm::value_ptr(model));
-	glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
-	glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
-
-	pt.prog.unUse();
 
 	// Calculated prior
 	glm::vec4 vtxVec;
 	for (int a = 0; a < 3; a++) {
-		vtxVec[a] = Pt::vtx[a];
+		vtxVec[a] = vtcCube[a];
 	}
 	vtxVec[3] = 1;
 
 	// Normalized device space
 	glm::vec3 vtxNorm = util::ndc(vtxVec, model, view, proj);
 
-	Pt ptNorm(glm::value_ptr(vtxNorm), "ndc", "red");
+	Pt ptNorm(glm::value_ptr(vtxNorm), "ndc", "white");
 
 	SDL_Event e;
 	while (disp.open) {
@@ -171,10 +155,6 @@ int main() {
 		glDisable(GL_DEPTH_TEST);
 
 		glPointSize(16);
-
-		pt.draw();
-
-		glPointSize(8);
 
 		ptNorm.draw();
 
