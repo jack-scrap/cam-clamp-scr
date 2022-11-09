@@ -13,6 +13,8 @@ Disp::Disp(const char* title, int wd, int ht) {
 
 	win = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, wd, ht, SDL_WINDOW_OPENGL);
 
+	rend = SDL_CreateRenderer(win, -1, 0);
+
 	ctx = SDL_GL_CreateContext(win);
 
 	GLenum status = glewInit();
