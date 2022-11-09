@@ -18,7 +18,7 @@ main.o: main.cpp
 
 .PHONY: make
 make: $(OBJ) $(HDR)
-	$(CXX) $(OBJ) $(LDFLAGS)
+	$(CXX) $(OBJ) $(LDFLAGS) -o a.out
 
 .PHONY: clean
 clean:
