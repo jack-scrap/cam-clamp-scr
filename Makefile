@@ -4,7 +4,7 @@ EXEC=a.out
 
 BUILDDIR=build
 
-SRC=main.cpp disp.cpp prog.cpp util.cpp pt.cpp
+SRC=main.cpp disp.cpp prog.cpp util.cpp pt.cpp obj.cpp
 HDR=math.h
 
 OBJ=$(SRC:%.cpp=$(BUILDDIR)/%.o)

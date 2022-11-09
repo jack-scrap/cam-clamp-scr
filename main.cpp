@@ -11,6 +11,7 @@
 #include "util.h"
 #include "math.h"
 #include "pt.h"
+#include "obj.h"
 
 const unsigned int res[2] = {
 	800,
@@ -22,76 +23,6 @@ glm::vec3 camPos = glm::vec3(3, 3, 7);
 glm::mat4 view = glm::lookAt(camPos, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 
 glm::mat4 proj = glm::perspective(glm::radians(45.0), res[X] / (double) res[Y], 0.1, 100.0);
-
-class Obj {
-	private:
-		unsigned int _noEl;
-
-		glm::mat4 _model;
-
-		GLuint _vao;
-
-		GLint _uni[3];
-
-		Prog _prog;
-
-		enum matrix {
-			MODEL,
-			VIEW,
-			PROJ
-		};
-
-	public:
-		Obj(GLfloat* vtc, GLuint* idc, unsigned int noEl, std::string nameVtx, std::string nameFrag) :
-			_prog(nameVtx, nameFrag),
-			_noEl(noEl),
-			_model(glm::mat4(1.0)) {
-				glGenVertexArrays(1, &_vao);
-				glBindVertexArray(_vao);
-
-				// Position
-				GLuint vbo;
-				glGenBuffers(1, &vbo);
-				glBindBuffer(GL_ARRAY_BUFFER, vbo);
-				glBufferData(GL_ARRAY_BUFFER, _noEl * 3 * sizeof (GLfloat), vtc, GL_STATIC_DRAW);
-
-				// Index
-				GLuint ibo;
-				glGenBuffers(1, &ibo);
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-				glBufferData(GL_ELEMENT_ARRAY_BUFFER, _noEl * sizeof (GLuint), idc, GL_STATIC_DRAW);
-
-				// Matrix
-				_prog.use();
-
-				GLint attrPos = glGetAttribLocation(_prog._id, "pos");
-				glVertexAttribPointer(attrPos, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*) 0);
-				glEnableVertexAttribArray(attrPos);
-
-				_uni[MODEL] = glGetUniformLocation(_prog._id, "model");
-				_uni[VIEW] = glGetUniformLocation(_prog._id, "view");
-				_uni[PROJ] = glGetUniformLocation(_prog._id, "proj");
-
-				glUniformMatrix4fv(_uni[MODEL], 1, GL_FALSE, glm::value_ptr(_model));
-				glUniformMatrix4fv(_uni[VIEW], 1, GL_FALSE, glm::value_ptr(view));
-				glUniformMatrix4fv(_uni[PROJ], 1, GL_FALSE, glm::value_ptr(proj));
-
-				_prog.unUse();
-			}
-
-		void draw() {
-			glBindVertexArray(_vao);
-			_prog.use();
-
-			glUniformMatrix4fv(_uni[MODEL], 1, GL_FALSE, glm::value_ptr(_model));
-			glUniformMatrix4fv(_uni[VIEW], 1, GL_FALSE, glm::value_ptr(view));
-
-			glDrawElements(GL_TRIANGLES, _noEl, GL_UNSIGNED_INT, (GLvoid*) 0);
-
-			_prog.unUse();
-			glBindVertexArray(0);
-		}
-};
 
 bool save = false;
 
