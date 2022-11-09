@@ -104,7 +104,7 @@ int main() {
 	// Normalized device space
 	glm::vec3 vtxNorm = util::ndc(vtxVec, model, view, proj);
 
-	Pt ptNorm(&vtxNorm[0], "ndc", "red");
+	Pt ptNorm(glm::value_ptr(vtxNorm), "ndc", "red");
 
 	SDL_Event e;
 	while (disp.open) {
