@@ -174,8 +174,8 @@ int main() {
 	/* Points */
 	glm::mat4 model = glm::mat4(1.0);
 
-	glm::vec3 vtxNorm[(sizeof vtcCube / sizeof *vtcCube) / 3];
-	for (int i = 0; i < sizeof vtxNorm / sizeof *vtxNorm; i++) {
+	glm::vec3 vtcNorm[(sizeof vtcCube / sizeof *vtcCube) / 3];
+	for (int i = 0; i < sizeof vtcNorm / sizeof *vtcNorm; i++) {
 		// Calculated prior
 		glm::vec4 vtxVec;
 		for (int a = 0; a < 3; a++) {
@@ -184,23 +184,23 @@ int main() {
 		vtxVec[3] = 1;
 
 		// Normalized device space
-		vtxNorm[i] = util::ndc(vtxVec, model, view, proj);
+		vtcNorm[i] = util::ndc(vtxVec, model, view, proj);
 	}
 
 	GLfloat bound[2][2];
-	for (int i = 0; i < sizeof vtxNorm / sizeof *vtxNorm; i++) {
-		if (vtxNorm[i][X] < bound[X][MIN]) {
-			bound[X][MIN] = vtxNorm[i][X];
+	for (int i = 0; i < sizeof vtcNorm / sizeof *vtcNorm; i++) {
+		if (vtcNorm[i][X] < bound[X][MIN]) {
+			bound[X][MIN] = vtcNorm[i][X];
 		}
-		if (vtxNorm[i][X] > bound[X][MAX]) {
-			bound[X][MAX] = vtxNorm[i][X];
+		if (vtcNorm[i][X] > bound[X][MAX]) {
+			bound[X][MAX] = vtcNorm[i][X];
 		}
 
-		if (vtxNorm[i][Y] < bound[Y][MIN]) {
-			bound[Y][MIN] = vtxNorm[i][Y];
+		if (vtcNorm[i][Y] < bound[Y][MIN]) {
+			bound[Y][MIN] = vtcNorm[i][Y];
 		}
-		if (vtxNorm[i][Y] > bound[Y][MAX]) {
-			bound[Y][MAX] = vtxNorm[i][Y];
+		if (vtcNorm[i][Y] > bound[Y][MAX]) {
+			bound[Y][MAX] = vtcNorm[i][Y];
 		}
 	}
 
