@@ -1,7 +1,10 @@
+#define GLM_ENABLE_EXPERIMENTAL
+
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 #include "disp.h"
 #include "prog.h"
@@ -23,7 +26,6 @@ int main() {
 	GLfloat vtc[3] = {
 		0.0, 0.0, 0.0
 	};
-	glBufferData(GL_ARRAY_BUFFER, sizeof vtc, vtc, GL_STATIC_DRAW);
 
 	// index
 	GLuint ibo;
@@ -41,6 +43,25 @@ int main() {
 
 	glm::mat4 view = glm::lookAt(glm::vec3(3, 3, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 	glm::mat4 proj = glm::perspective(glm::radians(45.0), 800.0 / 600.0, 0.1, 100.0);
+
+	glm::vec4 vtx = glm::vec4(vtc[0], vtc[1], vtc[2], 1.0);
+
+	// matrix is left-hand operand given being column-major
+	// World space
+	vtx = model * vtx;
+
+	// Camera space
+	vtx = view * vtx;
+
+	// Clip space
+	vtx = proj * vtx;
+
+	// Normalized device space
+	for (int a = 0; a < 3 + 1; a++) {
+		vtx[a] = vtx[a] / vtx[3];
+	}
+
+	glBufferData(GL_ARRAY_BUFFER, 3 * sizeof (GLfloat), &vtx[0], GL_STATIC_DRAW);
 
 	// shader
 	Prog prog("shad", "shad");
