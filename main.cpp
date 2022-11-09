@@ -29,7 +29,7 @@ int main() {
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-	GLfloat vtc[3] = {
+	GLfloat vtx[3] = {
 		0.0, 0.0, 0.0
 	};
 
@@ -50,7 +50,7 @@ int main() {
 	glm::mat4 view = glm::lookAt(glm::vec3(3, 3, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 	glm::mat4 proj = glm::perspective(glm::radians(45.0), res[X] / (double) res[Y], 0.1, 100.0);
 
-	glm::vec4 vtxVec = glm::vec4(glm::vec3(vtc[0], vtc[1], vtc[2]), 1.0);
+	glm::vec4 vtxVec = glm::vec4(glm::vec3(vtx[0], vtx[1], vtx[2]), 1.0);
 
 	// Matrix is left-hand operand given being column-major
 	// World space
@@ -91,7 +91,7 @@ int main() {
 	GLuint vboSnd;
 	glGenBuffers(1, &vboSnd);
 	glBindBuffer(GL_ARRAY_BUFFER, vboSnd);
-	glBufferData(GL_ARRAY_BUFFER, 3 * sizeof (GLfloat), vtc, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 3 * sizeof (GLfloat), vtx, GL_STATIC_DRAW);
 
 	// index
 	GLuint iboSnd;
