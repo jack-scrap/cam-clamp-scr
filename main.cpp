@@ -84,6 +84,8 @@ int main() {
 	glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
 	glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
 
+	prog.unUse();
+
 	SDL_Event e;
 	while (disp.open) {
 		while (SDL_PollEvent(&e)) {
@@ -92,9 +94,15 @@ int main() {
 			}
 		}
 
+		glBindVertexArray(vao);
+		prog.use();
+
 		disp.clear(0, 0, 0, 1);
 
 		glDrawElements(GL_POINTS, 1, GL_UNSIGNED_INT, (GLvoid*) 0);
+
+		prog.unUse();
+		glBindVertexArray(0);
 
 		disp.update();
 	}
