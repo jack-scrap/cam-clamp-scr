@@ -8,6 +8,8 @@ SDL=-lSDL2
 LDFLAGS+=$(SDL)
 LDFLAGS+=$(GL)
 
+HDR=math.h
+
 .PHONY: clean
 
 all: make

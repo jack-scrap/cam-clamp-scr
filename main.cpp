@@ -9,11 +9,7 @@
 #include "disp.h"
 #include "prog.h"
 #include "util.h"
-
-enum axis {
-	X,
-	Y
-};
+#include "math.h"
 
 const unsigned int res[2] = {
 	800,

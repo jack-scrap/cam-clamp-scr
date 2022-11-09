@@ -1,0 +1,4 @@
+enum axis {
+	X,
+	Y
+};
