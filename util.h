@@ -6,5 +6,5 @@
 namespace util {
 	std::string rd(std::string name);
 
-	glm::vec3 ndc(glm::vec4 clip);
+	glm::vec3 ndc(glm::vec4 vtx, glm::mat4 model, glm::mat4 view, glm::mat4 proj);
 }

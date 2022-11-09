@@ -20,11 +20,21 @@ std::string util::rd(std::string name) {
 	return total;
 }
 
-glm::vec3 util::ndc(glm::vec4 clip) {
-	glm::vec3 vtx;
+glm::vec3 util::ndc(glm::vec4 vtx, glm::mat4 model, glm::mat4 view, glm::mat4 proj) {
+	// Matrix is left-hand operand given being column-major
+	// World space
+	vtx = model * vtx;
+
+	// Camera space
+	vtx = view * vtx;
+
+	// Clip space
+	vtx = proj * vtx;
+
+	glm::vec3 _;
 	for (int a = 0; a < 3; a++) {
-		vtx[a] = clip[a] / clip[3];
+		_[a] = vtx[a] / vtx[3];
 	}
 
-	return vtx;
+	return _;
 }

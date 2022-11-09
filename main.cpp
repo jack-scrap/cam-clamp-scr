@@ -53,18 +53,8 @@ int main() {
 
 	glm::vec4 vtxVec = glm::vec4(glm::vec3(vtx[0], vtx[1], vtx[2]), 1.0);
 
-	// Matrix is left-hand operand given being column-major
-	// World space
-	vtxVec = model * vtxVec;
-
-	// Camera space
-	vtxVec = view * vtxVec;
-
-	// Clip space
-	vtxVec = proj * vtxVec;
-
 	// Normalized device space
-	glm::vec3 vtxNorm = util::ndc(vtxVec);
+	glm::vec3 vtxNorm = util::ndc(vtxVec, model, view, proj);
 
 	glBufferData(GL_ARRAY_BUFFER, 3 * sizeof (GLfloat), &vtxNorm[0], GL_STATIC_DRAW);
 
