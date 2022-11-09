@@ -10,7 +10,7 @@ OBJ=$(SRC:%.cpp=%.o)
 LDFLAGS=-lSDL2 -lGLEW -lGL
 
 .PHONY: all
-all: mk_build $(EXEC)
+all: mk_build $(EXEC) mk_o
 
 %.o: %.cpp %.h
 	$(CXX) -c $< -o $@ $(LDFLAGS)
@@ -24,6 +24,10 @@ $(EXEC): $(OBJ) $(HDR)
 .PHONY: mk_build
 mk_build:
 	mkdir -p build
+
+.PHONY: mk_o
+mk_o:
+	mkdir -p o
 
 .PHONY: clean
 clean:
