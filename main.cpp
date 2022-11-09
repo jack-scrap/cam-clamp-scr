@@ -17,7 +17,7 @@ const unsigned int res[2] = {
 	600
 };
 
-glm::mat4 view = glm::lookAt(glm::vec3(3, 3, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+glm::mat4 view = glm::lookAt(glm::vec3(3, 3, 7), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 
 glm::mat4 proj = glm::perspective(glm::radians(45.0), res[X] / (double) res[Y], 0.1, 100.0);
 
