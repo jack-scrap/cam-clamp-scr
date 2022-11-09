@@ -3,11 +3,11 @@ CXX=g++
 EXEC=a.out
 
 SRC=main.cpp disp.cpp prog.cpp util.cpp
+HDR=math.h
+
 OBJ=$(SRC:%.cpp=%.o)
 
 LDFLAGS=-lSDL2 -lGLEW -lGL
-
-HDR=math.h
 
 .PHONY: all
 all: $(EXEC)
