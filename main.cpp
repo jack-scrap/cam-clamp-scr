@@ -70,7 +70,7 @@ int main() {
 	glBufferData(GL_ARRAY_BUFFER, 3 * sizeof (GLfloat), &vtxVec[0], GL_STATIC_DRAW);
 
 	// shader
-	Prog prog("main", "white");
+	Prog prog("ndc", "white");
 
 	prog.use();
 
