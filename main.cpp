@@ -16,6 +16,14 @@ const unsigned int res[2] = {
 	600
 };
 
+GLfloat vtx[3] = {
+	0.0, 0.0, 0.0
+};
+
+GLuint idx[1] = {
+	0
+};
+
 glm::vec3 ndc(glm::vec4 clip) {
 	glm::vec3 vtx;
 	for (int a = 0; a < 3; a++) {
@@ -38,18 +46,10 @@ int main() {
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-	GLfloat vtx[3] = {
-		0.0, 0.0, 0.0
-	};
-
 	// index
 	GLuint ibo;
 	glGenBuffers(1, &ibo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-
-	GLuint idx[1] = {
-		0
-	};
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof (GLfloat), idx, GL_STATIC_DRAW);
 
 	// matrix
