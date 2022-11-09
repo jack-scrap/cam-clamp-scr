@@ -225,7 +225,7 @@ int main() {
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-	GLfloat vtc[] = {
+	GLfloat vtc[2 * 2 * 3] = {
 		bound[X][MIN], bound[Y][MIN], 0.0,
 		bound[X][MAX], bound[Y][MIN], 0.0,
 		bound[X][MIN], bound[Y][MAX], 0.0,
