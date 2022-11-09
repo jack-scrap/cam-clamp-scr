@@ -16,6 +16,15 @@ const unsigned int res[2] = {
 	600
 };
 
+glm::vec3 ndc(glm::vec4 clip) {
+	glm::vec3 vtx;
+	for (int a = 0; a < 3; a++) {
+		vtx[a] = clip[a] / clip[3];
+	}
+
+	return vtx;
+}
+
 int main() {
 	Disp disp("asdf", res[X], res[Y]);
 
@@ -63,11 +72,9 @@ int main() {
 	vtxVec = proj * vtxVec;
 
 	// Normalized device space
-	for (int a = 0; a < 3 + 1; a++) {
-		vtxVec[a] = vtxVec[a] / vtxVec[3];
-	}
+	glm::vec3 asdf = ndc(vtxVec);
 
-	glBufferData(GL_ARRAY_BUFFER, 3 * sizeof (GLfloat), &vtxVec[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 3 * sizeof (GLfloat), &asdf[0], GL_STATIC_DRAW);
 
 	// shader
 	Prog prog("ndc", "white");
