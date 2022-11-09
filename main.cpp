@@ -17,13 +17,17 @@ const unsigned int res[2] = {
 	600
 };
 
-glm::mat4 view = glm::lookAt(glm::vec3(3, 3, 7), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+glm::vec3 camPos = glm::vec3(3, 3, 7);
+
+glm::mat4 view = glm::lookAt(camPos, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 
 glm::mat4 proj = glm::perspective(glm::radians(45.0), res[X] / (double) res[Y], 0.1, 100.0);
 
 class Cube {
 	private:
 		unsigned int _noEl;
+
+		glm::mat4 _model;
 
 		GLuint _vao;
 
@@ -36,7 +40,8 @@ class Cube {
 	public:
 		Cube(GLfloat* vtc, GLuint* idc, unsigned int noEl) :
 			_prog("cube", "cube"),
-			_noEl(noEl) {
+			_noEl(noEl),
+			_model(glm::mat4(1.0)) {
 				glGenVertexArrays(1, &_vao);
 				glBindVertexArray(_vao);
 
@@ -53,8 +58,6 @@ class Cube {
 				glBufferData(GL_ELEMENT_ARRAY_BUFFER, _noEl * sizeof (GLuint), idc, GL_STATIC_DRAW);
 
 				// Matrix
-				glm::mat4 model = glm::mat4(1.0);
-
 				_prog.use();
 
 				GLint attrPos = glGetAttribLocation(_prog._id, "pos");
@@ -65,7 +68,7 @@ class Cube {
 				_uniView = glGetUniformLocation(_prog._id, "view");
 				_uniProj = glGetUniformLocation(_prog._id, "proj");
 
-				glUniformMatrix4fv(_uniModel, 1, GL_FALSE, glm::value_ptr(model));
+				glUniformMatrix4fv(_uniModel, 1, GL_FALSE, glm::value_ptr(_model));
 				glUniformMatrix4fv(_uniView, 1, GL_FALSE, glm::value_ptr(view));
 				glUniformMatrix4fv(_uniProj, 1, GL_FALSE, glm::value_ptr(proj));
 
@@ -75,6 +78,9 @@ class Cube {
 		void draw() {
 			glBindVertexArray(_vao);
 			_prog.use();
+
+			glUniformMatrix4fv(_uniModel, 1, GL_FALSE, glm::value_ptr(_model));
+			glUniformMatrix4fv(_uniView, 1, GL_FALSE, glm::value_ptr(view));
 
 			glDrawElements(GL_TRIANGLES, _noEl, GL_UNSIGNED_INT, (GLvoid*) 0);
 
@@ -252,6 +258,25 @@ int main() {
 	while (disp.open) {
 		while (SDL_PollEvent(&e)) {
 			if (e.type == SDL_KEYDOWN) {
+				if (e.key.keysym.sym == SDLK_RIGHT) {
+					camPos[X]++;
+				}
+
+				if (e.key.keysym.sym == SDLK_LEFT) {
+					camPos[X]--;
+				}
+
+				if (e.key.keysym.sym == SDLK_UP) {
+					camPos[Y]++;
+					view = glm::lookAt(camPos, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+				}
+
+				if (e.key.keysym.sym == SDLK_DOWN) {
+					camPos[Y]--;
+				}
+
+				view = glm::lookAt(camPos, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+
 				if (e.key.keysym.sym == SDLK_F12) {
 					save = true;
 				}
