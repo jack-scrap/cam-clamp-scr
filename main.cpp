@@ -50,7 +50,11 @@ int main() {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof (GLfloat), idx, GL_STATIC_DRAW);
 
-	glm::vec4 vtxVec = glm::vec4(glm::vec3(vtx[0], vtx[1], vtx[2]), 1.0);
+	glm::vec4 vtxVec;
+	for (int a = 0; a < 3; a++) {
+		vtxVec[a] = vtx[a];
+	}
+	vtxVec[3] = 1.0;
 
 	// Normalized device space
 	glm::vec3 vtxNorm = util::ndc(vtxVec, model, view, proj);
