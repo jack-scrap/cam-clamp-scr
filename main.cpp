@@ -41,7 +41,6 @@ bool save = false;
 
 void calcBound() {
 	for (int i = 0; i < sizeof vtcNorm / sizeof *vtcNorm; i++) {
-		// Calculated prior
 		glm::vec4 vtxVec;
 		for (int a = 0; a < 3; a++) {
 			vtxVec[a] = vtcCube[(i * 3) + a];
