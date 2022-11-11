@@ -186,7 +186,7 @@ int main() {
 		3, 5, 7
 	};
 
-	Obj cube(vtcCube, idcCube, sizeof idcCube / sizeof *idcCube, "cube", "cube");
+	Obj cube(vtcCube, idcCube, sizeof idcCube / sizeof *idcCube, "obj", "obj");
 
 	/* Points */
 	calcBound();
