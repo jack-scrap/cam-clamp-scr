@@ -65,6 +65,11 @@ bool scr(std::string fPath, SDL_Window* win, SDL_Renderer* rend) {
 	return true;
 }
 
+GLfloat bound[2][2];
+Pt* ptBound[2][2];
+
+GLfloat vtc[2 * 2 * 3];
+
 int main() {
 	Disp disp("asdf", res[X], res[Y]);
 
@@ -121,13 +126,12 @@ int main() {
 		vtcNorm[i] = util::ndc(vtxVec, model, view, proj);
 	}
 
-	GLfloat bound[2][2];
 	for (int a = 0; a < 2; a++) {
 		for (int b = 0; b < 2; b++) {
 			bound[a][b] = 0.0;
 		}
 	}
-	Pt* ptBound[2][2];
+
 	for (int i = 0; i < sizeof vtcNorm / sizeof *vtcNorm; i++) {
 		if (vtcNorm[i][X] < bound[X][MIN]) {
 			bound[X][MIN] = vtcNorm[i][X];
@@ -162,12 +166,18 @@ int main() {
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-	GLfloat vtc[2 * 2 * 3] = {
-		bound[X][MIN], bound[Y][MIN], 0.0,
-		bound[X][MAX], bound[Y][MIN], 0.0,
-		bound[X][MIN], bound[Y][MAX], 0.0,
-		bound[X][MAX], bound[Y][MAX], 0.0
-	};
+	vtc[0] = bound[X][MIN];
+	vtc[1] = bound[Y][MIN];
+
+	vtc[3] = bound[X][MAX];
+	vtc[4] = bound[Y][MIN];
+
+	vtc[6] = bound[X][MIN];
+	vtc[7] = bound[Y][MAX];
+
+	vtc[9] = bound[X][MAX];
+	vtc[10] = bound[Y][MAX];
+
 	glBufferData(GL_ARRAY_BUFFER, sizeof vtc, vtc, GL_STATIC_DRAW);
 
 	// Index
