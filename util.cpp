@@ -20,7 +20,7 @@ std::string util::rd(std::string name) {
 	return total;
 }
 
-glm::vec3 util::ndc(glm::vec4 vtx, glm::mat4 model, glm::mat4 view, glm::mat4 proj) {
+glm::vec2 util::ndc(glm::vec4 vtx, glm::mat4 model, glm::mat4 view, glm::mat4 proj) {
 	// Matrix is left-hand operand given being column-major
 	// World space
 	vtx = model * vtx;
@@ -36,5 +36,5 @@ glm::vec3 util::ndc(glm::vec4 vtx, glm::mat4 model, glm::mat4 view, glm::mat4 pr
 		_[a] = vtx[a] / vtx[3];
 	}
 
-	return _;
+	return glm::vec2(_);
 }

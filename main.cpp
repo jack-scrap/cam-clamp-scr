@@ -68,7 +68,7 @@ bool scr(std::string fPath, SDL_Window* win, SDL_Renderer* rend) {
 GLfloat bound[2][2];
 Pt* ptBound[2][2];
 
-GLfloat vtcBound[2 * 2 * 3];
+GLfloat vtcBound[2 * 2 * 2];
 
 int main() {
 	Disp disp("asdf", res[X], res[Y]);
@@ -113,7 +113,7 @@ int main() {
 	/* Points */
 	glm::mat4 model = glm::mat4(1.0);
 
-	glm::vec3 vtcNorm[(sizeof vtcCube / sizeof *vtcCube) / 3];
+	glm::vec2 vtcNorm[(sizeof vtcCube / sizeof *vtcCube) / 3];
 	for (int i = 0; i < sizeof vtcNorm / sizeof *vtcNorm; i++) {
 		// Calculated prior
 		glm::vec4 vtxVec;
@@ -169,14 +169,14 @@ int main() {
 	vtcBound[0] = bound[X][MIN];
 	vtcBound[1] = bound[Y][MIN];
 
-	vtcBound[3] = bound[X][MAX];
-	vtcBound[4] = bound[Y][MIN];
+	vtcBound[2] = bound[X][MAX];
+	vtcBound[3] = bound[Y][MIN];
 
-	vtcBound[6] = bound[X][MIN];
+	vtcBound[4] = bound[X][MIN];
+	vtcBound[5] = bound[Y][MAX];
+
+	vtcBound[6] = bound[X][MAX];
 	vtcBound[7] = bound[Y][MAX];
-
-	vtcBound[9] = bound[X][MAX];
-	vtcBound[10] = bound[Y][MAX];
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof vtcBound, vtcBound, GL_STATIC_DRAW);
 
@@ -196,7 +196,7 @@ int main() {
 	prog.use();
 
 	GLint attrPos = glGetAttribLocation(prog._id, "pos");
-	glVertexAttribPointer(attrPos, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*) 0);
+	glVertexAttribPointer(attrPos, 2, GL_FLOAT, GL_FALSE, 0, (GLvoid*) 0);
 	glEnableVertexAttribArray(attrPos);
 
 	prog.unUse();
