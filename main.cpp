@@ -26,9 +26,9 @@ glm::mat4 proj = glm::perspective(glm::radians(45.0), res[X] / (double) res[Y], 
 
 bool save = false;
 
-bool scr(std::string fPath, SDL_Window* SDLWindow, SDL_Renderer* SDLRenderer) {
+bool scr(std::string fPath, SDL_Window* win, SDL_Renderer* rend) {
 	SDL_Surface* surfSave = NULL;
-	SDL_Surface* surfInfo = SDL_GetWindowSurface(SDLWindow);
+	SDL_Surface* surfInfo = SDL_GetWindowSurface(win);
 
 	if (surfInfo == NULL) {
 		std::cerr << "Failed to create info surface from window in save(string), SDL_GetError() - " << SDL_GetError() << "\n";
@@ -39,7 +39,7 @@ bool scr(std::string fPath, SDL_Window* SDLWindow, SDL_Renderer* SDLRenderer) {
 
 			return false;
 		} else {
-			if (SDL_RenderReadPixels(SDLRenderer, &surfInfo->clip_rect, surfInfo->format->format, pix, surfInfo->w * surfInfo->format->BytesPerPixel) != 0) {
+			if (SDL_RenderReadPixels(rend, &surfInfo->clip_rect, surfInfo->format->format, pix, surfInfo->w * surfInfo->format->BytesPerPixel) != 0) {
 				std::cerr << "Failed to read pixel data from SDL_Renderer object. SDL_GetError() - " << SDL_GetError() << "\n";
 
 				delete[] pix;
