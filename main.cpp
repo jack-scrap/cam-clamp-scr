@@ -54,6 +54,8 @@ void calcBound() {
 	for (int a = 0; a < 2; a++) {
 		for (int b = 0; b < 2; b++) {
 			bound[a][b] = 0.0;
+
+			ptBound[a][b] = nullptr;
 		}
 	}
 
@@ -269,7 +271,9 @@ int main() {
 
 		for (int a = 0; a < 2; a++) {
 			for (int b = 0; b < 2; b++) {
-				ptBound[a][b]->draw();
+				if (ptBound[a][b]) {
+					ptBound[a][b]->draw();
+				}
 			}
 		}
 
