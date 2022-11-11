@@ -18,7 +18,7 @@ const unsigned int res[2] = {
 	600
 };
 
-glm::vec3 camPos = glm::vec3(3, 3, 7);
+glm::vec3 camPos = glm::vec3(3.0, 3.0, 7.0);
 
 glm::mat4 view = glm::lookAt(camPos, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 
