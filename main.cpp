@@ -142,11 +142,11 @@ bool scr(std::string fPath, SDL_Window* win, SDL_Renderer* rend) {
 int main() {
 	Disp disp("asdf", res[X], res[Y]);
 
-	camPos = glm::vec3(3.0, 3.0, 7.0);
+	camPos = glm::vec3(5.0, 5.0, 5.0);
 
 	model = glm::mat4(1.0);
 
-	view = glm::lookAt(camPos, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+	view = glm::lookAt(camPos, camPos + glm::vec3(-10, -10, -10), glm::vec3(0, 1, 0));
 
 	proj = glm::perspective(glm::radians(45.0), res[X] / (double) res[Y], 0.1, 100.0);
 
@@ -238,22 +238,22 @@ int main() {
 		while (SDL_PollEvent(&e)) {
 			if (e.type == SDL_KEYDOWN) {
 				if (e.key.keysym.sym == SDLK_RIGHT) {
-					camPos[X]++;
+					camPos[X] += 0.1;
 				}
 
 				if (e.key.keysym.sym == SDLK_LEFT) {
-					camPos[X]--;
+					camPos[X] -= 0.1;
 				}
 
 				if (e.key.keysym.sym == SDLK_UP) {
-					camPos[Y]++;
+					camPos[Y] += 0.1;
 				}
 
 				if (e.key.keysym.sym == SDLK_DOWN) {
-					camPos[Y]--;
+					camPos[Y] -= 0.1;
 				}
 
-				view = glm::lookAt(camPos, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+				view = glm::lookAt(camPos, camPos + glm::vec3(-10, -10, -10), glm::vec3(0, 1, 0));
 
 				calcBound();
 
