@@ -205,7 +205,6 @@ int main() {
 
 				if (e.key.keysym.sym == SDLK_UP) {
 					camPos[Y]++;
-					view = glm::lookAt(camPos, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 				}
 
 				if (e.key.keysym.sym == SDLK_DOWN) {
