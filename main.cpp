@@ -39,6 +39,8 @@ GLuint vbo;
 
 bool save = false;
 
+const GLfloat speed = 0.1;
+
 void calcBound() {
 	for (int i = 0; i < sizeof vtcNorm / sizeof *vtcNorm; i++) {
 		glm::vec4 vtxVec;
@@ -238,19 +240,19 @@ int main() {
 		while (SDL_PollEvent(&e)) {
 			if (e.type == SDL_KEYDOWN) {
 				if (e.key.keysym.sym == SDLK_RIGHT) {
-					camPos[X] += 0.1;
+					camPos[X] += speed;
 				}
 
 				if (e.key.keysym.sym == SDLK_LEFT) {
-					camPos[X] -= 0.1;
+					camPos[X] -= speed;
 				}
 
 				if (e.key.keysym.sym == SDLK_UP) {
-					camPos[Y] += 0.1;
+					camPos[Y] += speed;
 				}
 
 				if (e.key.keysym.sym == SDLK_DOWN) {
-					camPos[Y] -= 0.1;
+					camPos[Y] -= speed;
 				}
 
 				view = glm::lookAt(camPos, camPos + glm::vec3(-10, -10, -10), glm::vec3(0, 1, 0));
