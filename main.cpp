@@ -68,7 +68,7 @@ bool scr(std::string fPath, SDL_Window* win, SDL_Renderer* rend) {
 GLfloat bound[2][2];
 Pt* ptBound[2][2];
 
-GLfloat vtc[2 * 2 * 3];
+GLfloat vtcBound[2 * 2 * 3];
 
 int main() {
 	Disp disp("asdf", res[X], res[Y]);
@@ -166,30 +166,30 @@ int main() {
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-	vtc[0] = bound[X][MIN];
-	vtc[1] = bound[Y][MIN];
+	vtcBound[0] = bound[X][MIN];
+	vtcBound[1] = bound[Y][MIN];
 
-	vtc[3] = bound[X][MAX];
-	vtc[4] = bound[Y][MIN];
+	vtcBound[3] = bound[X][MAX];
+	vtcBound[4] = bound[Y][MIN];
 
-	vtc[6] = bound[X][MIN];
-	vtc[7] = bound[Y][MAX];
+	vtcBound[6] = bound[X][MIN];
+	vtcBound[7] = bound[Y][MAX];
 
-	vtc[9] = bound[X][MAX];
-	vtc[10] = bound[Y][MAX];
+	vtcBound[9] = bound[X][MAX];
+	vtcBound[10] = bound[Y][MAX];
 
-	glBufferData(GL_ARRAY_BUFFER, sizeof vtc, vtc, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof vtcBound, vtcBound, GL_STATIC_DRAW);
 
 	// Index
 	GLuint ibo;
 	glGenBuffers(1, &ibo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 
-	const GLuint idc[] = {
+	const GLuint idcBound[] = {
 		0, 1, 2,
 		2, 1, 3
 	};
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof idc, idc, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof idcBound, idcBound, GL_STATIC_DRAW);
 
 	Prog prog("ndc", "trans");
 
