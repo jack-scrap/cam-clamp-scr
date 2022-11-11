@@ -178,12 +178,6 @@ int main() {
 	Obj cube(vtcCube, idcCube, sizeof idcCube / sizeof *idcCube, "cube", "cube");
 
 	/* Points */
-	for (int a = 0; a < 2; a++) {
-		for (int b = 0; b < 2; b++) {
-			bound[a][b] = 0.0;
-		}
-	}
-
 	calcBound();
 
 	/* Bound */
