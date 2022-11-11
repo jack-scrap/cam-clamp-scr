@@ -26,47 +26,47 @@ glm::mat4 proj = glm::perspective(glm::radians(45.0), res[X] / (double) res[Y], 
 
 bool save = false;
 
-bool scr(std::string filepath, SDL_Window* SDLWindow, SDL_Renderer* SDLRenderer) {
-	SDL_Surface* saveSurface = NULL;
-	SDL_Surface* infoSurface = NULL;
-	infoSurface = SDL_GetWindowSurface(SDLWindow);
+bool scr(std::string fPath, SDL_Window* SDLWindow, SDL_Renderer* SDLRenderer) {
+	SDL_Surface* surfSave = NULL;
+	SDL_Surface* surfInfo = NULL;
+	surfInfo = SDL_GetWindowSurface(SDLWindow);
 
-	if (infoSurface == NULL) {
+	if (surfInfo == NULL) {
 		std::cerr << "Failed to create info surface from window in save(string), SDL_GetError() - " << SDL_GetError() << "\n";
 	} else {
-		unsigned char* pixels = new (std::nothrow) unsigned char[infoSurface->w * infoSurface->h * infoSurface->format->BytesPerPixel];
-		if (!pixels) {
+		unsigned char* pix = new (std::nothrow) unsigned char[surfInfo->w * surfInfo->h * surfInfo->format->BytesPerPixel];
+		if (!pix) {
 			std::cerr << "Unable to allocate memory for screenshot pixel data buffer!\n";
 
 			return false;
 		} else {
-			if (SDL_RenderReadPixels(SDLRenderer, &infoSurface->clip_rect, infoSurface->format->format, pixels, infoSurface->w * infoSurface->format->BytesPerPixel) != 0) {
+			if (SDL_RenderReadPixels(SDLRenderer, &surfInfo->clip_rect, surfInfo->format->format, pix, surfInfo->w * surfInfo->format->BytesPerPixel) != 0) {
 				std::cerr << "Failed to read pixel data from SDL_Renderer object. SDL_GetError() - " << SDL_GetError() << "\n";
 
-				delete[] pixels;
+				delete[] pix;
 
 				return false;
 			} else {
-				saveSurface = SDL_CreateRGBSurfaceFrom(pixels, infoSurface->w, infoSurface->h, infoSurface->format->BitsPerPixel, infoSurface->w * infoSurface->format->BytesPerPixel, infoSurface->format->Rmask, infoSurface->format->Gmask, infoSurface->format->Bmask, infoSurface->format->Amask);
+				surfSave = SDL_CreateRGBSurfaceFrom(pix, surfInfo->w, surfInfo->h, surfInfo->format->BitsPerPixel, surfInfo->w * surfInfo->format->BytesPerPixel, surfInfo->format->Rmask, surfInfo->format->Gmask, surfInfo->format->Bmask, surfInfo->format->Amask);
 
-				if (saveSurface == NULL) {
+				if (surfSave == NULL) {
 					std::cerr << "Couldn't create SDL_Surface from renderer pixel data. SDL_GetError() - " << SDL_GetError() << "\n";
 
-					delete[] pixels;
+					delete[] pix;
 
 					return false;
 				}
 
-				SDL_SaveBMP(saveSurface, filepath.c_str());
-				SDL_FreeSurface(saveSurface);
-				saveSurface = NULL;
+				SDL_SaveBMP(surfSave, fPath.c_str());
+				SDL_FreeSurface(surfSave);
+				surfSave = NULL;
 			}
 
-			delete[] pixels;
+			delete[] pix;
 		}
 
-		SDL_FreeSurface(infoSurface);
-		infoSurface = NULL;
+		SDL_FreeSurface(surfInfo);
+		surfInfo = NULL;
 	}
 
 	return true;
