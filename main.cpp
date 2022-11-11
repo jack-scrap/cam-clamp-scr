@@ -24,6 +24,11 @@ glm::mat4 view = glm::lookAt(camPos, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 
 glm::mat4 proj = glm::perspective(glm::radians(45.0), res[X] / (double) res[Y], 0.1, 100.0);
 
+GLfloat bound[2][2];
+Pt* ptBound[2][2];
+
+GLfloat vtcBound[2 * 2 * 2];
+
 bool save = false;
 
 bool scr(std::string fPath, SDL_Window* win, SDL_Renderer* rend) {
@@ -64,11 +69,6 @@ bool scr(std::string fPath, SDL_Window* win, SDL_Renderer* rend) {
 
 	return true;
 }
-
-GLfloat bound[2][2];
-Pt* ptBound[2][2];
-
-GLfloat vtcBound[2 * 2 * 2];
 
 int main() {
 	Disp disp("asdf", res[X], res[Y]);
