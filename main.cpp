@@ -234,8 +234,6 @@ int main() {
 		/* Points */
 		glDisable(GL_DEPTH_TEST);
 
-		glPointSize(16);
-
 		for (int a = 0; a < 2; a++) {
 			for (int b = 0; b < 2; b++) {
 				ptBound[a][b]->draw();
