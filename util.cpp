@@ -38,3 +38,7 @@ glm::vec2 util::ndc(glm::vec4 vtx, glm::mat4 model, glm::mat4 view, glm::mat4 pr
 
 	return glm::vec2(_);
 }
+
+bool util::inRng(float val, float min, float max) {
+	return val > min && val < max;
+}
