@@ -20,6 +20,8 @@ const unsigned int res[2] = {
 
 glm::vec3 camPos = glm::vec3(3.0, 3.0, 7.0);
 
+glm::mat4 model = glm::mat4(1.0);
+
 glm::mat4 view = glm::lookAt(camPos, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 
 glm::mat4 proj = glm::perspective(glm::radians(45.0), res[X] / (double) res[Y], 0.1, 100.0);
@@ -27,9 +29,75 @@ glm::mat4 proj = glm::perspective(glm::radians(45.0), res[X] / (double) res[Y], 
 GLfloat bound[2][2];
 Pt* ptBound[2][2];
 
+GLfloat vtcCube[2 * 2 * 2 * 3];
+
+glm::vec2 vtcNorm[(sizeof vtcCube / sizeof *vtcCube) / 3];
+
 GLfloat vtcBound[2 * 2 * 2];
 
+GLuint vbo;
+
 bool save = false;
+
+void calcBound() {
+	for (int i = 0; i < sizeof vtcNorm / sizeof *vtcNorm; i++) {
+		// Calculated prior
+		glm::vec4 vtxVec;
+		for (int a = 0; a < 3; a++) {
+			vtxVec[a] = vtcCube[(i * 3) + a];
+		}
+		vtxVec[3] = 1;
+
+		// Normalized device space
+		vtcNorm[i] = util::ndc(vtxVec, model, view, proj);
+	}
+
+	for (int a = 0; a < 2; a++) {
+		for (int b = 0; b < 2; b++) {
+			bound[a][b] = 0.0;
+		}
+	}
+
+	for (int i = 0; i < sizeof vtcNorm / sizeof *vtcNorm; i++) {
+		if (vtcNorm[i][X] < bound[X][MIN]) {
+			bound[X][MIN] = vtcNorm[i][X];
+
+			ptBound[X][MIN] = new Pt(glm::value_ptr(vtcNorm[i]), "ndc", "white");
+		}
+		if (vtcNorm[i][X] > bound[X][MAX]) {
+			bound[X][MAX] = vtcNorm[i][X];
+
+			ptBound[X][MAX] = new Pt(glm::value_ptr(vtcNorm[i]), "ndc", "white");
+		}
+
+		if (vtcNorm[i][Y] < bound[Y][MIN]) {
+			bound[Y][MIN] = vtcNorm[i][Y];
+
+			ptBound[Y][MIN] = new Pt(glm::value_ptr(vtcNorm[i]), "ndc", "white");
+		}
+		if (vtcNorm[i][Y] > bound[Y][MAX]) {
+			bound[Y][MAX] = vtcNorm[i][Y];
+
+			ptBound[Y][MAX] = new Pt(glm::value_ptr(vtcNorm[i]), "ndc", "white");
+		}
+	}
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+	vtcBound[0] = bound[X][MIN];
+	vtcBound[1] = bound[Y][MIN];
+
+	vtcBound[2] = bound[X][MAX];
+	vtcBound[3] = bound[Y][MIN];
+
+	vtcBound[4] = bound[X][MIN];
+	vtcBound[5] = bound[Y][MAX];
+
+	vtcBound[6] = bound[X][MAX];
+	vtcBound[7] = bound[Y][MAX];
+
+	glBufferData(GL_ARRAY_BUFFER, sizeof vtcBound, vtcBound, GL_STATIC_DRAW);
+}
 
 bool scr(std::string fPath, SDL_Window* win, SDL_Renderer* rend) {
 	SDL_Surface* surfSave = NULL;
@@ -74,7 +142,6 @@ int main() {
 	Disp disp("asdf", res[X], res[Y]);
 
 	/* Cube */
-	GLfloat vtcCube[2 * 2 * 2 * 3];
 	int i = 0;
 	for (int z = 0; z < 2; z++) {
 		for (int y = 0; y < 2; y++) {
@@ -111,50 +178,13 @@ int main() {
 	Obj cube(vtcCube, idcCube, sizeof idcCube / sizeof *idcCube, "cube", "cube");
 
 	/* Points */
-	glm::mat4 model = glm::mat4(1.0);
-
-	glm::vec2 vtcNorm[(sizeof vtcCube / sizeof *vtcCube) / 3];
-	for (int i = 0; i < sizeof vtcNorm / sizeof *vtcNorm; i++) {
-		// Calculated prior
-		glm::vec4 vtxVec;
-		for (int a = 0; a < 3; a++) {
-			vtxVec[a] = vtcCube[(i * 3) + a];
-		}
-		vtxVec[3] = 1;
-
-		// Normalized device space
-		vtcNorm[i] = util::ndc(vtxVec, model, view, proj);
-	}
-
 	for (int a = 0; a < 2; a++) {
 		for (int b = 0; b < 2; b++) {
 			bound[a][b] = 0.0;
 		}
 	}
 
-	for (int i = 0; i < sizeof vtcNorm / sizeof *vtcNorm; i++) {
-		if (vtcNorm[i][X] < bound[X][MIN]) {
-			bound[X][MIN] = vtcNorm[i][X];
-
-			ptBound[X][MIN] = new Pt(glm::value_ptr(vtcNorm[i]), "ndc", "white");
-		}
-		if (vtcNorm[i][X] > bound[X][MAX]) {
-			bound[X][MAX] = vtcNorm[i][X];
-
-			ptBound[X][MAX] = new Pt(glm::value_ptr(vtcNorm[i]), "ndc", "white");
-		}
-
-		if (vtcNorm[i][Y] < bound[Y][MIN]) {
-			bound[Y][MIN] = vtcNorm[i][Y];
-
-			ptBound[Y][MIN] = new Pt(glm::value_ptr(vtcNorm[i]), "ndc", "white");
-		}
-		if (vtcNorm[i][Y] > bound[Y][MAX]) {
-			bound[Y][MAX] = vtcNorm[i][Y];
-
-			ptBound[Y][MAX] = new Pt(glm::value_ptr(vtcNorm[i]), "ndc", "white");
-		}
-	}
+	calcBound();
 
 	/* Bound */
 	GLuint vao;
@@ -162,7 +192,6 @@ int main() {
 	glBindVertexArray(vao);
 
 	// Position
-	GLuint vbo;
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
@@ -223,63 +252,7 @@ int main() {
 
 				view = glm::lookAt(camPos, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 
-				for (int i = 0; i < sizeof vtcNorm / sizeof *vtcNorm; i++) {
-					// Calculated prior
-					glm::vec4 vtxVec;
-					for (int a = 0; a < 3; a++) {
-						vtxVec[a] = vtcCube[(i * 3) + a];
-					}
-					vtxVec[3] = 1;
-
-					// Normalized device space
-					vtcNorm[i] = util::ndc(vtxVec, model, view, proj);
-				}
-
-				for (int a = 0; a < 2; a++) {
-					for (int b = 0; b < 2; b++) {
-						bound[a][b] = 0.0;
-					}
-				}
-
-				for (int i = 0; i < sizeof vtcNorm / sizeof *vtcNorm; i++) {
-					if (vtcNorm[i][X] < bound[X][MIN]) {
-						bound[X][MIN] = vtcNorm[i][X];
-
-						ptBound[X][MIN] = new Pt(glm::value_ptr(vtcNorm[i]), "ndc", "white");
-					}
-					if (vtcNorm[i][X] > bound[X][MAX]) {
-						bound[X][MAX] = vtcNorm[i][X];
-
-						ptBound[X][MAX] = new Pt(glm::value_ptr(vtcNorm[i]), "ndc", "white");
-					}
-
-					if (vtcNorm[i][Y] < bound[Y][MIN]) {
-						bound[Y][MIN] = vtcNorm[i][Y];
-
-						ptBound[Y][MIN] = new Pt(glm::value_ptr(vtcNorm[i]), "ndc", "white");
-					}
-					if (vtcNorm[i][Y] > bound[Y][MAX]) {
-						bound[Y][MAX] = vtcNorm[i][Y];
-
-						ptBound[Y][MAX] = new Pt(glm::value_ptr(vtcNorm[i]), "ndc", "white");
-					}
-				}
-
-				glBindBuffer(GL_ARRAY_BUFFER, vbo);
-
-				vtcBound[0] = bound[X][MIN];
-				vtcBound[1] = bound[Y][MIN];
-
-				vtcBound[2] = bound[X][MAX];
-				vtcBound[3] = bound[Y][MIN];
-
-				vtcBound[4] = bound[X][MIN];
-				vtcBound[5] = bound[Y][MAX];
-
-				vtcBound[6] = bound[X][MAX];
-				vtcBound[7] = bound[Y][MAX];
-
-				glBufferData(GL_ARRAY_BUFFER, sizeof vtcBound, vtcBound, GL_STATIC_DRAW);
+				calcBound();
 
 				if (e.key.keysym.sym == SDLK_F12) {
 					save = true;
